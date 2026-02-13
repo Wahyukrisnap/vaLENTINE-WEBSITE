@@ -1,7 +1,3 @@
-/**
- * Valentine Website - FIXED VERSION (MP3 Version)
- */
-
 // ================= CONFIG =================
 const CONFIG = {
     CORRECT_PASSWORD: "23032023",
@@ -9,52 +5,43 @@ const CONFIG = {
 };
 
 // ================= STATE =================
-let currentSurpriseIndex = 0;
-let music;
 let typingTimeout;
 let messageIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
+let surpriseIndex = 0;
 
 // ================= MESSAGES =================
-const warmMessages = [
-    "I Love You More Than Yesterday 💖",
-    "Kamu adalah hal terindah yang selalu memberikan rasa nyaman 🥺",
-    "Setiap hari bersamamu adalah petualangan favoritku 🫂",
-    "Terima kasih sudah sabar dan selalu ada 🤍",
-    "Aku sangat beruntung memilikimu 💞",
-    "Kamu membuat duniaku lebih berwarna 🌈",
-    "Janji kita terus bareng selamanya ya? 💍",
-    "Cintaku ke kamu seperti lagu 'Fix You' ❤️",
-    "Sayang kamu banyaaakkkk 😘",
-    "Terima kasih sudah hadir di hidupku 🥺🤍"
-];
-
 const typingMessages = [
     "Kamu adalah alasan aku tersenyum setiap hari 💕",
-    "Setiap detik bersamamu adalah anugerah 🌹",
-    "Terima kasih sudah menjadi bagian hidupku ❤️",
+    "Terima kasih sudah hadir dalam hidupku 🌹",
+    "Setiap detik bersamamu sangat berarti ❤️",
     "I love you more than words can say 💖"
 ];
 
+const surpriseMessages = [
+    "I Love You 💖",
+    "Kamu adalah hal terindah di hidupku 💕",
+    "Aku beruntung memilikimu 🥰",
+    "Selamanya ya ❤️"
+];
+
 // ================= HEART BACKGROUND =================
-function createHearts() {
-    const container = document.getElementById('hearts-container');
+function createHeart() {
+    const container = document.getElementById("hearts-container");
     if (!container) return;
 
-    const hearts = ['❤️','💖','💕','💗','💓','🌸'];
-
-    const heart = document.createElement('div');
-    heart.className = 'heart-particle';
-    heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.animationDuration = (5 + Math.random() * 5) + 's';
-    heart.style.fontSize = (1 + Math.random()) + 'rem';
+    const heart = document.createElement("div");
+    heart.innerHTML = "❤️";
+    heart.style.position = "fixed";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.top = "-10px";
+    heart.style.fontSize = "20px";
+    heart.style.animation = "fall 5s linear forwards";
 
     container.appendChild(heart);
 
-    setTimeout(() => heart.remove(), 8000);
+    setTimeout(() => heart.remove(), 5000);
 }
 
 // ================= TYPING EFFECT =================
@@ -84,8 +71,8 @@ function typeEffect() {
     typingTimeout = setTimeout(typeEffect, speed);
 }
 
-// ================= DAY COUNTER =================
-function updateDaysCounter() {
+// ================= COUNTER =================
+function updateDays() {
     const el = document.getElementById("days-counter");
     if (!el) return;
 
@@ -113,30 +100,8 @@ function handleLogin(e) {
         document.getElementById("login-section").classList.add("hidden");
         document.getElementById("welcome-section").classList.remove("hidden");
 
-        // 🎵 PLAY MUSIC WITH FADE IN
-        music.volume = 0;
-        music.play().catch(() => {});
-
-        let vol = 0;
-        const fade = setInterval(() => {
-            if (vol < 0.8) {
-                vol += 0.05;
-                music.volume = vol;
-            } else {
-                clearInterval(fade);
-            }
-        }, 200);
-
-        updateDaysCounter();
+        updateDays();
         typeEffect();
-
-        if (window.confetti) {
-            confetti({
-                particleCount: 120,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
-        }
 
     } else {
         error.classList.remove("hidden");
@@ -150,11 +115,6 @@ function handleLogout() {
     document.getElementById("welcome-section").classList.add("hidden");
     document.getElementById("login-section").classList.remove("hidden");
 
-    if (music) {
-        music.pause();
-        music.currentTime = 0;
-    }
-
     clearTimeout(typingTimeout);
     document.getElementById("typing-text").textContent = "";
     charIndex = 0;
@@ -166,17 +126,10 @@ function showSurprise() {
     const modal = document.getElementById("surprise-modal");
     const text = document.getElementById("modal-text");
 
-    text.textContent = warmMessages[currentSurpriseIndex];
-    currentSurpriseIndex = (currentSurpriseIndex + 1) % warmMessages.length;
+    text.textContent = surpriseMessages[surpriseIndex];
+    surpriseIndex = (surpriseIndex + 1) % surpriseMessages.length;
 
     modal.classList.remove("hidden");
-
-    if (window.confetti) {
-        confetti({
-            particleCount: 80,
-            spread: 60
-        });
-    }
 }
 
 function closeModal() {
@@ -186,10 +139,7 @@ function closeModal() {
 // ================= INIT =================
 document.addEventListener("DOMContentLoaded", () => {
 
-    music = document.getElementById("bg-music");
-
-    createHearts();
-    setInterval(createHearts, 1000);
+    setInterval(createHeart, 1000);
 
     document.getElementById("login-form")
         .addEventListener("submit", handleLogin);
