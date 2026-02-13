@@ -1,19 +1,19 @@
-// ================= CONFIG =================
+/**
+ * Static Valentine Website Logic
+ * Handles single-page navigation, login, and animations
+ */
+
+// Configuration
 const CONFIG = {
     CORRECT_PASSWORD: "23032023",
-    TANGGAL_JADIAN: "2023-03-23"
+    TANGGAL_JADIAN: "2023-03-23", // Kembali ke 23 Maret agar tepat 1059 hari pada 14 Feb 2026
+    MUSIC_URL: "https://www.youtube.com/embed/k4V3Mo61fJM?autoplay=1&loop=1&playlist=k4V3Mo61fJM"
 };
 
-// ================= STATE =================
-let typingTimeout;
-let messageIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let surpriseIndex = 0;
-
-// ================= MESSAGES =================
-const typingMessages = [
-"I Love You More Than Yesterday 💖",
+// State Management
+let currentSurpriseIndex = 0;
+const warmMessages = [
+    "I Love You More Than Yesterday 💖",
     "Kamu adalah hal terindah yang selaluu memberikan rasa nyaman🥺",
     "Setiap hari bersamamu adalah petualangan favoritku dan sekerdar jalan malem boncengan sambil ceritapun itu sudah cukup baik 🫂",
     "Terima kasih sudah sabar dan selalu ada buat aku, selalu sabar dengan sikap aku🤍",
@@ -25,138 +25,225 @@ const typingMessages = [
     "dan terimakasihh banyak tuhan, semesta sudah memberikan manusia terindah yang selalu menemani setiap perjalanan aku yg kesepian dan beradd ini🙂🥺🤍"
 ];
 
-const surpriseMessages = [
- "Kamu adalah alasan aku tersenyum setiap hari, bahkan saat aku merasa sendiri. 💕",
+// Typing Animation State
+const typingMessages = [
+    "Kamu adalah alasan aku tersenyum setiap hari, bahkan saat aku merasa sendiri. 💕",
     "Setiap detik bersamamu adalah anugerah yang paling indahh bubyy, dan aku sangat beruntung bisa memilikimu di hidupku. 🌹",
     "Terima kasih sudah menjadi bagian terindah dalam hidupku.",
     "I love you more than words can say ❤️"
 ];
+let messageIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let typingTimeout;
 
-// ================= HEART BACKGROUND =================
-function createHeart() {
-    const container = document.getElementById("hearts-container");
+/**
+ * Initialize falling hearts background
+ */
+function createHearts() {
+    const container = document.getElementById('hearts-container');
     if (!container) return;
 
-    const heart = document.createElement("div");
-    heart.innerHTML = "❤️";
-    heart.style.position = "fixed";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.top = "-10px";
-    heart.style.fontSize = "20px";
-    heart.style.animation = "fall 5s linear forwards";
+    const heartSymbols = ['❤️', '💖', '💕', '💗', '💓', '🌸'];
+    const count = 15;
 
-    container.appendChild(heart);
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.className = 'heart-particle';
+            heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            
+            const startX = Math.random() * 100;
+            const duration = 5 + Math.random() * 10;
+            const size = 0.8 + Math.random() * 1.5;
 
-    setTimeout(() => heart.remove(), 5000);
+            heart.style.left = startX + 'vw';
+            heart.style.animationDuration = duration + 's';
+            heart.style.fontSize = size + 'rem';
+            heart.style.opacity = 0.5 + Math.random() * 0.5;
+
+            container.appendChild(heart);
+
+            setTimeout(() => heart.remove(), duration * 1000);
+        }, i * 400);
+    }
 }
 
-// ================= TYPING EFFECT =================
-function typeEffect() {
-    const el = document.getElementById("typing-text");
-    if (!el) return;
+/**
+ * Handle Typing Animation
+ */
+function type() {
+    const typingTextElement = document.getElementById('typing-text');
+    if (!typingTextElement) return;
 
-    const current = typingMessages[messageIndex];
-
+    const currentMessage = typingMessages[messageIndex];
+    
     if (isDeleting) {
-        el.textContent = current.substring(0, charIndex--);
+        typingTextElement.textContent = currentMessage.substring(0, charIndex - 1);
+        charIndex--;
     } else {
-        el.textContent = current.substring(0, charIndex++);
+        typingTextElement.textContent = currentMessage.substring(0, charIndex + 1);
+        charIndex++;
     }
 
-    let speed = isDeleting ? 50 : 100;
+    let typeSpeed = isDeleting ? 50 : 100;
 
-    if (!isDeleting && charIndex === current.length) {
-        speed = 1500;
+    if (!isDeleting && charIndex === currentMessage.length) {
+        typeSpeed = 2000;
         isDeleting = true;
     } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
         messageIndex = (messageIndex + 1) % typingMessages.length;
-        speed = 400;
+        typeSpeed = 500;
     }
 
-    typingTimeout = setTimeout(typeEffect, speed);
+    typingTimeout = setTimeout(type, typeSpeed);
 }
 
-// ================= COUNTER =================
-function updateDays() {
-    const el = document.getElementById("days-counter");
-    if (!el) return;
+/**
+ * Calculate days since anniversary
+ */
+function updateDaysCounter() {
+    const counterElement = document.getElementById('days-counter');
+    if (!counterElement) return;
 
     const start = new Date(CONFIG.TANGGAL_JADIAN);
-    start.setHours(0,0,0,0);
-
+    start.setHours(0, 0, 0, 0); // Normalize to start of day
+    
     const now = new Date();
-    now.setHours(0,0,0,0);
-
-    const diff = Math.floor((now - start) / (1000*60*60*24));
-    el.textContent = diff + " Hari";
+    now.setHours(0, 0, 0, 0); // Normalize to start of day
+    
+    const diffTime = now - start;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    
+    counterElement.textContent = `${diffDays} Hari`;
 }
 
-// ================= LOGIN =================
-function handleLogin(e) {
-    e.preventDefault();
-
-    const input = document.getElementById("password-input").value;
-    const error = document.getElementById("error-msg");
-
-    if (input === CONFIG.CORRECT_PASSWORD) {
-
-        error.classList.add("hidden");
-
-        document.getElementById("login-section").classList.add("hidden");
-        document.getElementById("welcome-section").classList.remove("hidden");
-
-        updateDays();
-        typeEffect();
-
-    } else {
-        error.classList.remove("hidden");
-        document.getElementById("password-input").value = "";
-    }
-}
-
-// ================= LOGOUT =================
-function handleLogout() {
-
-    document.getElementById("welcome-section").classList.add("hidden");
-    document.getElementById("login-section").classList.remove("hidden");
-
-    clearTimeout(typingTimeout);
-    document.getElementById("typing-text").textContent = "";
-    charIndex = 0;
-    messageIndex = 0;
-}
-
-// ================= SURPRISE =================
+/**
+ * Show Surprise Modal
+ */
 function showSurprise() {
-    const modal = document.getElementById("surprise-modal");
-    const text = document.getElementById("modal-text");
+    const modal = document.getElementById('surprise-modal');
+    const modalText = document.getElementById('modal-text');
+    
+    modalText.textContent = warmMessages[currentSurpriseIndex];
+    currentSurpriseIndex = (currentSurpriseIndex + 1) % warmMessages.length;
+    
+    modal.classList.remove('hidden');
 
-    text.textContent = surpriseMessages[surpriseIndex];
-    surpriseIndex = (surpriseIndex + 1) % surpriseMessages.length;
-
-    modal.classList.remove("hidden");
+    if (window.confetti) {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#ff4d6d', '#ffffff']
+        });
+    }
 }
 
 function closeModal() {
-    document.getElementById("surprise-modal").classList.add("hidden");
+    document.getElementById('surprise-modal').classList.add('hidden');
 }
 
-// ================= INIT =================
-document.addEventListener("DOMContentLoaded", () => {
+/**
+ * Login Functionality
+ */
+function handleLogin(e) {
+    e.preventDefault();
+    const passwordInput = document.getElementById('password-input');
+    const errorMsg = document.getElementById('error-msg');
+    
+    if (passwordInput.value === CONFIG.CORRECT_PASSWORD) {
+        // Success
+        errorMsg.classList.add('hidden');
+        
+        // Switch sections
+        document.getElementById('login-section').classList.remove('active');
+        document.getElementById('login-section').classList.add('hidden');
+        
+        const welcomeSection = document.getElementById('welcome-section');
+        welcomeSection.classList.remove('hidden');
+        welcomeSection.classList.add('active');
+        
+        // Trigger Flicker & Music
+        const flicker = document.getElementById('flicker-overlay');
+        flicker.classList.add('flicker-active');
+        
+        document.getElementById('youtube-audio').src = CONFIG.MUSIC_URL;
+        
+        // Start animations
+        updateDaysCounter();
+        type();
+        
+        // Secret message timer
+        setTimeout(() => {
+            const secretMsg = document.getElementById('secret-message');
+            if (secretMsg) {
+                secretMsg.classList.remove('hidden');
+                secretMsg.classList.add('animate-fade-in');
+            }
+        }, 5000);
 
-    setInterval(createHeart, 1000);
+        // Confetti burst
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
 
-    document.getElementById("login-form")
-        .addEventListener("submit", handleLogin);
+    } else {
+        // Fail
+        errorMsg.classList.remove('hidden');
+        passwordInput.value = '';
+        passwordInput.focus();
+    }
+}
 
-    document.getElementById("logout-btn")
-        .addEventListener("click", handleLogout);
+/**
+ * Logout Functionality
+ */
+function handleLogout() {
+    // Reset sections
+    document.getElementById('welcome-section').classList.remove('active');
+    document.getElementById('welcome-section').classList.add('hidden');
+    
+    document.getElementById('login-section').classList.remove('hidden');
+    document.getElementById('login-section').classList.add('active');
+    
+    // Stop music & animations
+    document.getElementById('youtube-audio').src = '';
+    clearTimeout(typingTimeout);
+    document.getElementById('typing-text').textContent = '';
+    charIndex = 0;
+    messageIndex = 0;
+    
+    // Clear password
+    document.getElementById('password-input').value = '';
+}
 
-    document.getElementById("surprise-btn")
-        .addEventListener("click", showSurprise);
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize background
+    createHearts();
+    setInterval(createHearts, 8000);
 
-    document.getElementById("close-modal")
-        .addEventListener("click", closeModal);
+    // Form submission
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) loginForm.addEventListener('submit', handleLogin);
 
+    // Buttons
+    const surpriseBtn = document.getElementById('surprise-btn');
+    if (surpriseBtn) surpriseBtn.addEventListener('click', showSurprise);
+
+    const closeModalBtn = document.getElementById('close-modal');
+    if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
+
+    // Close modal on background click
+    window.addEventListener('click', (e) => {
+        const modal = document.getElementById('surprise-modal');
+        if (e.target === modal) closeModal();
+    });
 });
