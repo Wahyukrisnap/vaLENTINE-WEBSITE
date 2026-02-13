@@ -13,17 +13,23 @@ let surpriseIndex = 0;
 
 // ================= MESSAGES =================
 const typingMessages = [
-    "Kamu adalah alasan aku tersenyum setiap hari 💕",
-    "Terima kasih sudah hadir dalam hidupku 🌹",
-    "Setiap detik bersamamu sangat berarti ❤️",
-    "I love you more than words can say 💖"
+"I Love You More Than Yesterday 💖",
+    "Kamu adalah hal terindah yang selaluu memberikan rasa nyaman🥺",
+    "Setiap hari bersamamu adalah petualangan favoritku dan sekerdar jalan malem boncengan sambil ceritapun itu sudah cukup baik 🫂",
+    "Terima kasih sudah sabar dan selalu ada buat aku, selalu sabar dengan sikap aku🤍",
+    "Aku sangat beruntung memilikimu dan sangatt amat bersyukur, semoga bubyy bisa jaga perasaan aku terus yaa, janji jangan hianantin👤",
+    "Kamu membuat duniaku jadi lebih berwarna 🌈",
+    "Janji ya, kita bakal terus bareng-bareng selamanya? 💍",
+    "Cintaku ke kamu itu kayak lagu Coldplay, 'Fix You'... I will try to fix you (and keep you happy, ILoveyouu bubyyyyy...) ❤️",
+    "Sayangg bubyy banyaaakkk banyakkkk banyakkk banyakkkk banyakkkk😘🫀🌝",
+    "dan terimakasihh banyak tuhan, semesta sudah memberikan manusia terindah yang selalu menemani setiap perjalanan aku yg kesepian dan beradd ini🙂🥺🤍"
 ];
 
 const surpriseMessages = [
-    "I Love You 💖",
-    "Kamu adalah hal terindah di hidupku 💕",
-    "Aku beruntung memilikimu 🥰",
-    "Selamanya ya ❤️"
+ "Kamu adalah alasan aku tersenyum setiap hari, bahkan saat aku merasa sendiri. 💕",
+    "Setiap detik bersamamu adalah anugerah yang paling indahh bubyy, dan aku sangat beruntung bisa memilikimu di hidupku. 🌹",
+    "Terima kasih sudah menjadi bagian terindah dalam hidupku.",
+    "I love you more than words can say ❤️"
 ];
 
 // ================= HEART BACKGROUND =================
