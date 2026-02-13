@@ -1,0 +1,425 @@
+:root {
+    --primary-pink: #ff4d6d;
+    --secondary-pink: #ff758f;
+    --light-pink: #ffb3c1;
+    --dark-red: #c9184a;
+    --white: #fff0f3;
+    --glass: rgba(255, 255, 255, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, var(--secondary-pink), var(--dark-red));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding: 20px;
+}
+
+/* Section Management */
+.section {
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.section.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Background Animation */
+.hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.heart-particle {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.2rem;
+    animation: fall linear infinite;
+    will-change: transform;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* Login Page Styles */
+.login-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
+
+.login-box {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    padding: 30px 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.login-box h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.login-box p {
+    font-size: 1rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.input-group input {
+    width: 100%;
+    min-height: 45px;
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    outline: none;
+    font-size: 1rem;
+    text-align: center;
+    color: var(--dark-red);
+}
+
+.btn-login {
+    width: 100%;
+    min-height: 45px;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background: var(--primary-pink);
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-login:hover {
+    background: var(--dark-red);
+    transform: translateY(-2px);
+}
+
+.btn-login:active {
+    transform: scale(0.95);
+    background: var(--dark-red);
+}
+
+.error-msg {
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: #fff;
+    background: rgba(139, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 10px;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Welcome Page Styles */
+.welcome-content {
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+}
+
+.welcome-content h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+}
+
+.welcome-content h2 {
+    font-size: clamp(1.1rem, 4vw, 1.5rem);
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+.typing-text {
+    font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+    min-height: 1.5em;
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+.countdown-box {
+    background: var(--glass);
+    padding: 20px;
+    border-radius: 15px;
+    display: block;
+    width: fit-content;
+    margin: 0 auto 40px auto;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.btn-surprise {
+    width: 100%;
+    min-height: 50px;
+    padding: 15px 30px;
+    border-radius: 30px;
+    border: none;
+    background: white;
+    color: var(--dark-red);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.4s;
+    font-size: 1.1rem;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    animation: pulse 2s infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-surprise:active {
+    transform: scale(0.95) !important;
+    background: var(--light-pink);
+}
+
+.btn-logout {
+    text-decoration: none;
+    color: white;
+    font-size: 0.9rem;
+    min-height: 40px;
+    padding: 8px 25px;
+    border-radius: 20px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: 0.3s;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-logout:active {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive & Mobile Queries */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .welcome-content {
+        padding: 10px;
+    }
+
+    .modal-content {
+        padding: 30px 20px;
+        width: 90%;
+    }
+}
+
+/* Landscape Mode for Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    body {
+        align-items: flex-start;
+        padding: 40px 20px;
+    }
+    
+    .welcome-content h1 {
+        font-size: 2rem;
+    }
+    
+    .countdown-box {
+        margin-bottom: 20px;
+    }
+}
+
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.zoom-in {
+    animation: zoomIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+}
+
+@keyframes zoomIn {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.delay-1 { animation-delay: 0.3s; }
+.delay-2 { animation-delay: 0.6s; }
+.delay-3 { animation-delay: 0.9s; }
+
+/* Flicker Effect */
+.flicker-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.flicker-active {
+    animation: flicker 0.5s ease-out forwards;
+}
+
+@keyframes flicker {
+    0% { opacity: 0.8; }
+    20% { opacity: 0; }
+    40% { opacity: 0.5; }
+    60% { opacity: 0; }
+    80% { opacity: 0.3; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+/* Secret Message */
+.secret-message {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    opacity: 0.8;
+    transition: 1s;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 20px;
+    position: relative;
+    text-align: center;
+    color: var(--dark-red);
+    max-width: 90%;
+    animation: popUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@keyframes popUp {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    font-weight: 600;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.heart-text {
+    display: inline-block;
+    animation: heartbeat 1.2s infinite;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    15% { transform: scale(1.3); }
+    30% { transform: scale(1); }
+    45% { transform: scale(1.15); }
+    60% { transform: scale(1); }
+}
